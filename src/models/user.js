@@ -2,6 +2,10 @@
 const {
   Model
 } = require('sequelize');
+
+const bcrypt = require('bcrypt');
+const {SALT} = require('../config/serverConfig');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -33,5 +37,13 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+
+User.beforeCreate(  (user)=>{
+  // bcrypt provide us to algorithm to hash or bcrypt. 
+  // In the time of login user send the planetext password using bcrypt.compare we can compare it.
+  const encryptedPassword = bcrypt.hashSync(user.password,SALT);
+  user.password = encryptedPassword;  
+})
+
   return User;
 };
