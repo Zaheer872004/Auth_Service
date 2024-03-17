@@ -1,4 +1,5 @@
 const { User } = require('../models/index');
+const user = require('../models/user');
 
 class UserRepository{
     // constructor(){
@@ -23,6 +24,18 @@ class UserRepository{
             })
             return true;
         } catch (error) {
+            console.log("Something went wrong on repository layer");
+            throw error;
+        }
+    }
+
+    async getById(userId){
+        try{
+            const user = await User.findByPk(userId,{
+                attributes:['id','email']
+            });
+            return user;
+        }catch(error){
             console.log("Something went wrong on repository layer");
             throw error;
         }
