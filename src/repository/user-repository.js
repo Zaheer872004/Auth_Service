@@ -1,6 +1,5 @@
 const { User } = require('../models/index');
-const user = require('../models/user');
-const user = require('../models/user');
+
 
 class UserRepository{
     // constructor(){
@@ -41,11 +40,11 @@ class UserRepository{
             throw error;
         }
     }
-    async getByEmail(email){
+    async getByEmail(userEmail){
         try {
             const user = await User.findOne({
-                where :{
-                    email : user.email,
+                where : {
+                    email : userEmail,
                 }
             });
             return user;
