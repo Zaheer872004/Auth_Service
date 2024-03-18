@@ -1,5 +1,6 @@
 const { User } = require('../models/index');
 const user = require('../models/user');
+const user = require('../models/user');
 
 class UserRepository{
     // constructor(){
@@ -36,6 +37,19 @@ class UserRepository{
             });
             return user;
         }catch(error){
+            console.log("Something went wrong on repository layer");
+            throw error;
+        }
+    }
+    async getByEmail(email){
+        try {
+            const user = await User.findOne({
+                where :{
+                    email : user.email,
+                }
+            });
+            return user;
+        } catch (error) {
             console.log("Something went wrong on repository layer");
             throw error;
         }

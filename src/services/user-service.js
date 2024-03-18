@@ -30,6 +30,28 @@ class UserService{
             throw error;
         }
     }
+
+    async signIn(email,plaintextPassword){
+    try {
+        const user = await this.userRepository.getByEmail(email);
+
+        const checkingPassword = this.checkPassword(plaintextPassword,user.password);
+        
+        if(!checkingPassword){
+            console.log("Invalid password try again later");
+            throw error;
+        }
+
+        const generateToken = this.createToken({email : user.email, id : user.id});
+        return generateToken;
+
+    } catch (error) {
+        console.log(`Something went wrong in User Signed In`);
+    }
+    }
+
+
+
     verifyToken(token){
         try {
             const response = jwt.verify(token,JWT_KEY);
