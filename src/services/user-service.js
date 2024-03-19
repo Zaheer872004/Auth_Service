@@ -3,6 +3,7 @@ const { JWT_KEY } = require("../config/serverConfig");
 const bcrypt = require("bcrypt");
 
 const UserRepository = require("../repository/user-repository");
+const { use } = require("../routes/v1");
 
 class UserService {
   constructor() {
@@ -54,6 +55,28 @@ class UserService {
     } catch (error) {
       console.log(`Something went wrong in User Signed In`);
       throw error;
+    }
+  }
+
+  async isAuthencticated(token){
+    try {
+      const response = this.verifyToken(token);
+      
+      if(!response){
+        throw {error: ` Invalid token `};
+      }
+
+      const user =this.userRepository.getById(response.id);
+
+      if(!user){
+        throw {error: ` No user with the corresponding token exists`}
+      }
+      return user.id;
+
+
+    } catch (error) {
+      console.log(`Something went wrong in the auth process`);
+      throw {error :`user not authenticated`};
     }
   }
 
